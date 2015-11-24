@@ -13,7 +13,8 @@ type TuLing struct {
 }
 
 func (tl *TuLing) Translation(chat string) {
-	response,_:=http.Get("http://www.tuling123.com/openapi/api?key=fcfea588759708b454baa23fe8f17b80&info="+chat)
+	key := "fcfea588759708b454baa23fe8f17b80"
+	response,_:=http.Get("http://www.tuling123.com/openapi/api?key="+key+"&info="+chat)
 	defer response.Body.Close()
 	
 	if response.StatusCode == 200 {

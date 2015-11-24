@@ -21,11 +21,11 @@ type WebChatController struct {
 // @Failure 403 body is empty
 // @router / [post]
 func (wc *WebChatController) Post() {
-	//fmt.Println("Post")
+	fmt.Println("WebChat_Post")
 	fmt.Println(string(wc.Ctx.Input.RequestBody))
 	
 	var receiver models.WebChatTextReceiver
-	var returner string
+	var returner models.WebChatTextReturner
 	
 	err:=xml.Unmarshal(wc.Ctx.Input.RequestBody, &receiver)
 	if err==nil {
@@ -37,10 +37,8 @@ func (wc *WebChatController) Post() {
 		fmt.Println(err)
 	}
 	
-	//fmt.Println(returner)
-	//wc.Data["xml"] = returner
-	//wc.ServeXml()
-	wc.Ctx.WriteString(returner)
+	wc.Data["xml"] = returner
+	wc.ServeXml()
 }
 
 // @Title Get
@@ -49,10 +47,15 @@ func (wc *WebChatController) Post() {
 // @Failure 403 :echostr is empty
 // @router / [get]
 func (wc *WebChatController) Get() {
-	//fmt.Println("Get")
+	fmt.Println("WebChat_Get")
 	fmt.Println(wc.Ctx.Input.Request.URL)
 	
 	urlParam := wc.Ctx.Input.Request.URL.RawQuery
 	m,_ := url.ParseQuery(urlParam)
-	wc.Ctx.WriteString(m["echostr"][0])
+	
+	if (m["echostr"]!=nil){
+		wc.Ctx.WriteString(m["echostr"][0])
+	} else {
+		wc.Ctx.WriteString("No echostr Param")
+	}
 }

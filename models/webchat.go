@@ -1,7 +1,9 @@
 package models
 
 import (
-	"fmt"
+	//"fmt"
+	"encoding/xml"
+	"time"
 )
 
 type WebChatTextReceiver struct {
@@ -13,24 +15,22 @@ type WebChatTextReceiver struct {
 	MsgId   string
 }
 
-func (rc *WebChatTextReceiver) Return(ai AI) string {
-	var str = 	"<xml>" + 
-				"<ToUserName>" + 
-				rc.FromUserName +
-				"</ToUserName>" +
-				"<FromUserName>" +
-				rc.ToUserName +
-				"</FromUserName>" +
-				"<CreateTime>" +
-				rc.CreateTime +
-				"</CreateTime>" +
-				"<MsgType>" +
-				rc.MsgType +
-				"</MsgType>" +
-				"<Content>" +
-				ai.Chat + 
-				"</Content>" +
-				"</xml>"
-	fmt.Println(str)
-	return str
+type WebChatTextReturner struct {
+	XMLName      xml.Name `xml:"xml"`
+	ToUserName   string
+	FromUserName   string
+	CreateTime   time.Duration
+	MsgType   string
+	Content   string
+}
+
+func (rc *WebChatTextReceiver) Return(ai AI) WebChatTextReturner {
+	var returner WebChatTextReturner
+	returner.ToUserName = rc.FromUserName
+	returner.FromUserName = rc.ToUserName
+	returner.CreateTime = time.Duration(time.Now().Unix())
+	returner.MsgType = rc.MsgType
+	returner.Content = ai.Chat
+	
+	return returner
 }
