@@ -4,6 +4,7 @@ import (
 	 "net/http"
 	 "encoding/json"
 	 "io/ioutil"
+	 "fmt"
 )
 
 type TuLing struct {
@@ -20,6 +21,9 @@ func (tl *TuLing) Translation(chat string) {
 		
 		err:=json.Unmarshal([]byte(body), &tl)
 		if err==nil {
+			//test
+		} else {
+			fmt.Println(err)
 		}
 	}
 }
