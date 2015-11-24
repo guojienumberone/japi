@@ -21,7 +21,7 @@ func (tl *TuLing) Translation(chat string) {
 		
 		err:=json.Unmarshal([]byte(body), &tl)
 		if err==nil {
-			//test
+			fmt.Println(tl)
 		} else {
 			fmt.Println(err)
 		}
